@@ -6,12 +6,21 @@ const App = () => {
   ]) 
   const [ newName, setNewName ] = useState('')
 
+
+  // Pitäisikö tän olla erikseen? Vai samikseen?
+  // Kuitenki lisäysjärjestys indeksöi --> safe?
+  // MUTTA VOIHAN TRAK, MITEN EPÄOPTIMAALISTA LASKENNALLISESTI <3<3 (^_^)
+  const [ numbers, setNumber ] = useState([
+    { number: '+358 60 546 2345'}
+  ])
+
   const handleAddPerson = (event) => { // handler
     event.preventDefault()
     const newPerson = {
       name: newName,
     }
     
+    //TODO: vaadi, ettei oo tyhjä. Typerää, että voi lisätä ' ' -nimisen tyypin.
     if (persons.map(person => person.name).includes(newName)) {
       return (window.alert(`${newName} has been added already!`))
     }
@@ -27,11 +36,14 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <form onSubmit={handleAddPerson}>
+      <form style={{margin: 10}} onSubmit={handleAddPerson}>
         <div>
           name: <input //input, ja sit sitä händläillään
             value={newName}
             onChange={handleTyping}/>
+        </div>
+        <div>
+          number:<input />
         </div>
         <div>
           <button type="submit">add</button>
