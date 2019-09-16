@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 //Anna tyypille puhelinnumero!
 
-const PuhelinnumeronLisays = ({newName}, {setNewName}, {persons}, {setPersons}) => {
+const PuhelinnumeronLisays = ({newName}, {setNewName}, persons, setPersons) => {
   
   const handleAddPerson = (event) => { // handler
     event.preventDefault()
@@ -10,6 +10,7 @@ const PuhelinnumeronLisays = ({newName}, {setNewName}, {persons}, {setPersons}) 
       name: newName,
     }
     
+    // Kaatuu ehkä siihen, että yrittää formilla submit 'ei mitään?' Pitäiskö require, että ei ole tyhjä?
     if (persons.map(person => person.name).includes(newName)) {
       return (window.alert(`${newName} has been added already!`))
     }
@@ -18,7 +19,7 @@ const PuhelinnumeronLisays = ({newName}, {setNewName}, {persons}, {setPersons}) 
   }
 
   const handleTyping = (event) => {
-    //console.log(event.target.value)
+    console.log("here", event.target.value)
     setNewName(event.target.value) //target pointtaa <input>in kenttään
   }
 
