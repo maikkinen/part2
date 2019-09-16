@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 
-const App = () => {
-  const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
-  ]) 
-  const [ newName, setNewName ] = useState('')
+//Anna tyypille puhelinnumero!
 
+const PuhelinnumeronLisays = ({newName}, {setNewName}, {persons}, {setPersons}) => {
+  
   const handleAddPerson = (event) => { // handler
     event.preventDefault()
     const newPerson = {
@@ -26,17 +24,34 @@ const App = () => {
 
   return (
     <div>
-      <h2>Phonebook</h2>
       <form onSubmit={handleAddPerson}>
         <div>
           name: <input //input, ja sit sitä händläillään
             value={newName}
-            onChange={handleTyping}/>
+            onChange={handleTyping}
+            />
         </div>
+        {console.log("sup")}
         <div>
           <button type="submit">add</button>
         </div>
       </form>
+    </div>
+  )
+
+}
+
+
+const App = () => {
+  const [ persons, setPersons] = useState([
+    { name: 'Arto Hellas' }
+  ]) 
+  const [ newName, setNewName ] = useState('')
+
+  return (
+    <div>
+      <h2>Phonebook</h2>
+      <PuhelinnumeronLisays newName={newName} setNewName={setNewName} persons={persons} setPersons={setPersons}/>
       <h2>Numbers</h2>
         <ul>
           {persons.map(person => <li key={person.name} >{person.name}</li> )}
