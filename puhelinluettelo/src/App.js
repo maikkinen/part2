@@ -1,37 +1,54 @@
 import React, { useState } from 'react'
 
 const App = () => {
-  const [ persons, setPersons] = useState([
-    { name: 'Arto Hellas' }
-  ]) 
+  const [ persons, setPersons ] = useState(
+    [
+      { name: 'Arto Hellas',
+        phonenumber: '+358 60 546 2345'
+      },
+      {
+        name: 'Liisa Lokki',
+        phonenumber: '+47 67 345 7654'
+      },
+      { name: 'Kaisa Kuoriainen',
+        phonenumber: '+358 12 101 0010'
+      },
+      { name: 'Kaj Frank',
+        phonenumber: '+45 45 5300 355'
+      }
+    ]
+  ) 
+
   const [ newName, setNewName ] = useState('')
-
-
-  // Pitäisikö tän olla erikseen? Vai samikseen?
-  // Kuitenki lisäysjärjestys indeksöi --> safe?
-  // MUTTA VOIHAN TRAK, MITEN EPÄOPTIMAALISTA LASKENNALLISESTI <3<3 (^_^)
-  const [ numbers, setNumber ] = useState([
-    { number: '+358 60 546 2345'}
-  ])
+  const [ newNumber, setNewNumber] = useState('')
 
   const handleAddPerson = (event) => { // handler
     event.preventDefault()
     const newPerson = {
       name: newName,
+      phonenumber: newNumber
     }
     
-    //TODO: vaadi, ettei oo tyhjä. Typerää, että voi lisätä ' ' -nimisen tyypin.
+    //TODO: vaadi, ettei oo tyhjä. Typerää, että voi lisätä ' ' -nimisen tyypin. -- OK :)
+    
     if (persons.map(person => person.name).includes(newName)) {
       return (window.alert(`${newName} has been added already!`))
     }
-    setPersons(persons.concat(newPerson))
-    setNewName('')
+    else if (newNumber.length <= 0) {
+      return (window.alert(`Please, give ${newName} an appropriate phone number!`))
+    }
+    else {
+      const personsUpd = persons.concat(newPerson)
+      setPersons(personsUpd)
+      setNewName('')
+      setNewNumber('')
+    }
+    
   }
 
-  const handleTyping = (event) => {
-    //console.log(event.target.value)
-    setNewName(event.target.value) //target pointtaa <input>in kenttään
-  }
+  const handleTypingName = (event) => (setNewName(event.target.value))
+  
+  const handleTypingNumber = (event) => (setNewNumber(event.target.value))
 
   return (
     <div>
@@ -39,11 +56,15 @@ const App = () => {
       <form style={{margin: 10}} onSubmit={handleAddPerson}>
         <div>
           name: <input //input, ja sit sitä händläillään
+            name="name"
             value={newName}
-            onChange={handleTyping}/>
+            onChange={handleTypingName}/>
         </div>
         <div>
-          number:<input />
+          number: <input
+            name="number" 
+            value={newNumber}
+            onChange={handleTypingNumber}/>
         </div>
         <div>
           <button type="submit">add</button>
@@ -51,7 +72,7 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
         <ul>
-          {persons.map(person => <li key={person.name} >{person.name}</li> )}
+          {persons.map(person => <li key={person.name} >{person.name} {person.phonenumber}</li> )}
         </ul>
     </div>
   )
