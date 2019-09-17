@@ -21,6 +21,7 @@ const App = () => {
 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
+  const [ filteringPattern, filterWith ] = useState('')
 
   const handleAddPerson = (event) => { // handler
     event.preventDefault()
@@ -50,9 +51,23 @@ const App = () => {
   
   const handleTypingNumber = (event) => (setNewNumber(event.target.value))
 
+  const handleTypingFilter = (event) => {
+    console.log(event.target.value)
+    filterWith(event.target.value)
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        show contacts with:  
+          <input
+            name="filteringPattern"
+            value={filteringPattern}
+            onChange={handleTypingFilter}
+          />
+      </div>
+      <h2>Add a New Contact</h2>
       <form style={{margin: 10}} onSubmit={handleAddPerson}>
         <div>
           name: <input //input, ja sit sitä händläillään
