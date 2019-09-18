@@ -42,6 +42,28 @@ const Filtering = ({filter, setFilter}) => {
   )
 }
 
+const PersonForm = ({newName, newNumber, handleTypingName, handleTypingNumber, handleAddPerson}) => {
+  return (
+  <form style={{margin: 10}} onSubmit={handleAddPerson}>
+      <div>
+        name: <input //input, ja sit sitä händläillään
+          name="name"
+          value={newName}
+          onChange={handleTypingName}/>
+      </div>
+      <div>
+        number: <input
+          name="number" 
+          value={newNumber}
+          onChange={handleTypingNumber}/>
+      </div>
+      <div>
+        <button type="submit">add</button>
+      </div>
+    </form>
+  )
+} 
+
 const App = () => {
   const [ persons, setPersons ] = useState(
     [
@@ -97,30 +119,14 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
         <Filtering filter={filter} setFilter={(e) => setFilter(e)}/>
-
       <h2>Add a New Contact</h2>
-      <form style={{margin: 10}} onSubmit={handleAddPerson}>
-        <div>
-          name: <input //input, ja sit sitä händläillään
-            name="name"
-            value={newName}
-            onChange={handleTypingName}/>
-        </div>
-        <div>
-          number: <input
-            name="number" 
-            value={newNumber}
-            onChange={handleTypingNumber}/>
-        </div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+        <PersonForm newName={newName} newNumber={newNumber} handleTypingName={handleTypingName} handleTypingNumber={handleTypingNumber} handleAddPerson={handleAddPerson} />
       <h2>Numbers</h2>
         <PhonebookList persons={persons} filter={filter} />
     </div>
   )
 
 }
+
 
 export default App
