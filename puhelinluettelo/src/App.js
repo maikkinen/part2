@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import axios from 'axios'
 
 const PhonebookList = ({persons, filter}) => {
   const filteredNames = persons
@@ -8,7 +9,7 @@ const PhonebookList = ({persons, filter}) => {
     const filteredNames = persons.filter(person => (person.name.includes(filt)))
     return (
       <ul>
-          {filteredNames.map(person => <li key={person.name} >{person.name} {person.phonenumber}</li> )}
+          {filteredNames.map(person => <li key={person.name} >{person.name} {person.number}</li> )}
       </ul>
     )
   }
@@ -16,7 +17,7 @@ const PhonebookList = ({persons, filter}) => {
   else { 
     return (
       <ul>
-        {filteredNames.map(person => <li key={person.name} >{person.name} {person.phonenumber}</li> )}
+        {filteredNames.map(person => <li key={person.name} >{person.name} {person.number}</li> )}
       </ul>
       )
   }
@@ -65,36 +66,45 @@ const PersonForm = ({newName, newNumber, handleTypingName, handleTypingNumber, h
 } 
 
 const App = () => {
+  const [ newName, setNewName ] = useState('')
+  const [ newNumber, setNewNumber] = useState('')
+  const [ filter, setFilter ] = useState('')
   const [ persons, setPersons ] = useState(
     [
       { name: 'Arto Hellas',
-        phonenumber: '+358 60 546 2345'
+        number: '+358 60 546 2345'
       },
-      {
-        name: 'Liisa Lokki',
-        phonenumber: '+47 67 345 7654'
+      { name: 'Liisa Lokki',
+        number: '+47 67 345 7654'
       },
       { name: 'Kaisa Kuoriainen',
-        phonenumber: '+358 12 101 0010'
+        number: '+358 12 101 0010'
       },
       { name: 'Kaj Frank',
-        phonenumber: '+45 45 5300 355'
+        number: '+45 45 5300 355'
       },
       { name: 'Päivi Päärynäjäätelö',
-        phonenumber: '+1 405 054 7722'
+        number: '+1 405 054 7722'
       }
     ]
   ) 
 
-  const [ newName, setNewName ] = useState('')
-  const [ newNumber, setNewNumber] = useState('')
-  const [ filter, setFilter ] = useState('')
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('response.data', response.data)
+        setPersons(response.data)
+      })
+  }, [])
+  console.log('render', persons.length, 'persons')
 
   const handleAddPerson = (event) => { // handler
     event.preventDefault()
     const newPerson = {
       name: newName,
-      phonenumber: newNumber
+      number: newNumber
     }
     
     if (persons.map(person => person.name).includes(newName)) {
