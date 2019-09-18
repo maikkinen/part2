@@ -1,5 +1,47 @@
 import React, { useState } from 'react'
 
+const PhonebookList = ({persons, filter}) => {
+  const filteredNames = persons
+  const filt = filter
+
+  if (filter !== "") { //filteriin taitaa mennä jtn ennen kuin kaatuu, koska pääsee 7:aan
+    const filteredNames = persons.filter(person => (person.name.includes(filt)))
+    return (
+      <ul>
+          {filteredNames.map(person => <li key={person.name} >{person.name} {person.phonenumber}</li> )}
+      </ul>
+    )
+  }
+  //Jos ei haluta filtteröidä = näytä kaikki.
+  else { 
+    return (
+      <ul>
+        {filteredNames.map(person => <li key={person.name} >{person.name} {person.phonenumber}</li> )}
+      </ul>
+      )
+  }
+}
+
+const Filtering = ({filter, setFilter}) => {
+
+  const handleTypingFilter = (event) => {
+    console.log(event.target.value)
+    setFilter(event.target.value)
+  }
+
+  return (
+  <div>
+
+        show contacts with:  
+          <input
+            name="filter"
+            value={filter}
+            onChange={handleTypingFilter}
+          />
+  </div>
+  )
+}
+
 const App = () => {
   const [ persons, setPersons ] = useState(
     [
@@ -15,13 +57,16 @@ const App = () => {
       },
       { name: 'Kaj Frank',
         phonenumber: '+45 45 5300 355'
+      },
+      { name: 'Päivi Päärynäjäätelö',
+        phonenumber: '+1 405 054 7722'
       }
     ]
   ) 
 
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
-  const [ filteringPattern, filterWith ] = useState('')
+  const [ filter, setFilter ] = useState('')
 
   const handleAddPerson = (event) => { // handler
     event.preventDefault()
@@ -29,8 +74,6 @@ const App = () => {
       name: newName,
       phonenumber: newNumber
     }
-    
-    //TODO: vaadi, ettei oo tyhjä. Typerää, että voi lisätä ' ' -nimisen tyypin. -- OK :)
     
     if (persons.map(person => person.name).includes(newName)) {
       return (window.alert(`${newName} has been added already!`))
@@ -48,25 +91,13 @@ const App = () => {
   }
 
   const handleTypingName = (event) => (setNewName(event.target.value))
-  
   const handleTypingNumber = (event) => (setNewNumber(event.target.value))
-
-  const handleTypingFilter = (event) => {
-    console.log(event.target.value)
-    filterWith(event.target.value)
-  }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        show contacts with:  
-          <input
-            name="filteringPattern"
-            value={filteringPattern}
-            onChange={handleTypingFilter}
-          />
-      </div>
+        <Filtering filter={filter} setFilter={(e) => setFilter(e)}/>
+
       <h2>Add a New Contact</h2>
       <form style={{margin: 10}} onSubmit={handleAddPerson}>
         <div>
@@ -86,9 +117,7 @@ const App = () => {
         </div>
       </form>
       <h2>Numbers</h2>
-        <ul>
-          {persons.map(person => <li key={person.name} >{person.name} {person.phonenumber}</li> )}
-        </ul>
+        <PhonebookList persons={persons} filter={filter} />
     </div>
   )
 
