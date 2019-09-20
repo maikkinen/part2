@@ -6,7 +6,7 @@ const CountryList = ({countries, filter}) => {
 
   if (filter !== "") {
     const filteredCountries = countries.filter(country => (country.name.includes(filt)))
-    if(filteredCountries.length >= 7) {
+    if(filteredCountries.length >= 10) {
       return (
         <div>
           Too many matches, be more specific, please.
