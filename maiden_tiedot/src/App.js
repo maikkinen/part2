@@ -5,27 +5,27 @@ const CountryList = ({countries, filter}) => {
   const filteredCountries = countries
   const filt = filter
 
-  if (filter !== "") { //filteriin taitaa mennä jtn ennen kuin kaatuu, koska pääsee 7:aan
+  if (filter !== "") {
     const filteredCountries = countries.filter(country => (country.name.includes(filt)))
-    if(filteredCountries.length >= 5) {
+    if(filteredCountries.length >= 7) {
       return (
         <div>
           Too many matches, be more specific, please.
         </div>
       )
-    } 
-    return (
-      <ul>
-          {filteredCountries.map(country => <li key={country.name} >{country.name}</li> )}
-      </ul>
-    )
+    }
+    else {
+      return (
+        <ul>
+            {filteredCountries.map(country => <li key={country.name} >{country.name}</li> )}
+        </ul>
+      )
+    }
   }
-  //Jos ei haluta filtteröidä = näytä kaikki.
+  // Default, kun ei oo vielä tullut ensimmäistäkään inputtia filteriin.
   else { 
     return (
-      <ul>
-        {filteredCountries.map(country => <li key={country.name} >{country.name}</li> )}
-      </ul>
+      <p> Too many matches, be more specific, please. </p>
       )
   }
 }
