@@ -65,9 +65,9 @@ const DisplayOne = ({filteredCountries}) => {
       <p style={{margin:0}}>population: {country.population}</p>
       <h4>Languages</h4>
         <ul>
-          {languages.map(lang => <li key={lang}>{lang}</li>)}
+          {languages.map(lang => <li key={lang.name}>{lang.name}</li>)}
         </ul>
-        {console.log('here', languages)}
+      <img src={country.flag} key={country.name} style={{width:110, height:75}}/>
     </div>
   )
 }
@@ -94,7 +94,6 @@ const FilteringField = ({filter, setFilter}) => {
 
 const App = () => {
   const [ filter, setFilter] = useState('')
-  const [ displayCountry, setDisplayCountry] = useState('')
   const [ countries, setCountries ] = useState ( //incl. 12 hard-coded samples
     [
       {
@@ -171,6 +170,17 @@ const App = () => {
       }
     ]
   )
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('https://restcountries.eu/rest/v2/all')
+      .then(response => {
+        console.log('response.data', response.data)
+        setCountries(response.data)
+      })
+  }, [])
+  console.log('success here')
 
   return (
     <div>
