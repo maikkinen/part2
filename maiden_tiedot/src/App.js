@@ -49,16 +49,25 @@ const CountryList = ({countries, filter}) => {
 const DisplayMany = ({filteredCountries}) => {
   return(
     <ul>
-      {filteredCountries.map(country => <li key={country.name} >{country.name}</li> )}
+      {filteredCountries.map(country => <li key={country.name}>{country.name}</li> )}
     </ul>
 
   )
 }
 
 const DisplayOne = ({filteredCountries}) => {
+  const country = filteredCountries[0]
+  const languages=country.languages
   return(
     <div>
-      <p>{filteredCountries[0].name}</p>
+      <h4>{country.name}</h4>
+      <p style={{margin:0}}>capital: {country.capital}</p>
+      <p style={{margin:0}}>population: {country.population}</p>
+      <h4>Languages</h4>
+        <ul>
+          {languages.map(lang => <li key={lang}>{lang}</li>)}
+        </ul>
+        {console.log('here', languages)}
     </div>
   )
 }
@@ -92,73 +101,73 @@ const App = () => {
         name: "Sweden",
         capital: "Stockholm",
         population: "8,7 million",
-        languages: 'Swedish'
+        languages: ['French', 'Chinese', 'Polish', 'Norwegian']
       },
       {
         name: "Norway",
         capital: "Oslo",
         population: "6,7 million",
-        languages: 'Norwegian'
+        languages: ['French', 'Chinese', 'Polish', 'Norwegian']
       },
       {
         name: "Iceland",
         capital: "Reykjavik",
         population: "3,2 million",
-        languages: 'Icelandic'
+        languages: ['French', 'Chinese', 'Polish', 'Norwegian']
       },
       {
         name: "France",
         capital: "Paris",
         population: "50 million",
-        languages: 'French'
+        languages: ['French', 'Chinese', 'Polish', 'Norwegian']
       },
       {
         name: "Turku",
         capital: "Paris",
         population: "50 million",
-        languages: 'French'
+        languages: ['French', 'Chinese', 'Polish', 'Norwegian']
       },
       {
         name: "Kokkola",
         capital: "Paris",
         population: "50 million",
-        languages: 'French'
+        languages: ['French', 'Chinese', 'Polish', 'Norwegian']
       },
       {
         name: "Rovaniemi",
         capital: "Paris",
         population: "50 million",
-        languages: 'French'
+        languages: ['French', 'Chinese', 'Polish', 'Norwegian']
       },
       {
         name: "Tampere",
         capital: "Paris",
         population: "50 million",
-        languages: 'French'
+        languages: ['French', 'Chinese', 'Polish', 'Norwegian']
       },
       {
         name: "Kuopio",
         capital: "Paris",
         population: "50 million",
-        languages: 'French'
+        languages: ['Japanese', 'Chinese', 'Polish', 'Norwegian']
       },
       {
         name: "Vaasa",
         capital: "Paris",
         population: "50 million",
-        languages: 'French'
+        languages: ['Swedish']
       },
       {
         name: "Ekenäs",
         capital: "Umeå",
         population: "50 million",
-        languages: 'Finlandssvenska'
+        languages: ['Finlandssvenska', 'rikssvenska']
       },
       {
         name: "Kotka",
-        capital: "Paris",
+        capital: "Madrid",
         population: "50 million",
-        languages: 'French'
+        languages: ['Persian']
       }
     ]
   )
