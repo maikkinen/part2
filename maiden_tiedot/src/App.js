@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios'
 
 const CountryList = ({countries, filter}) => {
-  const filteredCountries = countries
   const filt = filter
 
   if (filter !== "") {
@@ -14,11 +13,28 @@ const CountryList = ({countries, filter}) => {
         </div>
       )
     }
+    else if(filteredCountries.length > 1) {
+      return (
+        <div>
+          <DisplayMany filteredCountries={filteredCountries}/>
+          {/* {console.log('here babe')}*/}
+        </div>
+      )
+    }
+    else if(filteredCountries.length === 0) {
+      return (
+        <div>
+          I'm afraid there ain't such a place on the planet.
+          {/* {console.log('here babe')}*/}
+        </div>
+      )
+    }
     else {
       return (
-        <ul>
-            {filteredCountries.map(country => <li key={country.name} >{country.name}</li> )}
-        </ul>
+        <div>
+        <DisplayOne filteredCountries={filteredCountries}/>
+        {console.log('ready to call DisplayOne, honey, with', filteredCountries)}
+        </div>
       )
     }
   }
@@ -30,18 +46,19 @@ const CountryList = ({countries, filter}) => {
   }
 }
 
-const displayMany = ({filteredCountries}) => {
+const DisplayMany = ({filteredCountries}) => {
   return(
-    <div>
-      Yo many
-    </div>
+    <ul>
+      {filteredCountries.map(country => <li key={country.name} >{country.name}</li> )}
+    </ul>
+
   )
 }
 
-const displayOne = ({oneCountry}) => {
+const DisplayOne = ({filteredCountries}) => {
   return(
     <div>
-      Yo One
+      <p>{filteredCountries[0].name}</p>
     </div>
   )
 }
