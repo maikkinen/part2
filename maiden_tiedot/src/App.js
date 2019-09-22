@@ -1,7 +1,7 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 
-const CountryList = ({countries, filter}) => {
+const CountryList = ({countries, filter, setFilter}) => {
   const filt = filter
 
   if (filter !== "") {
@@ -16,8 +16,8 @@ const CountryList = ({countries, filter}) => {
     else if(filteredCountries.length > 1) {
       return (
         <div>
-          <DisplayMany filteredCountries={filteredCountries}/>
-          {/* {console.log('here babe')}*/}
+          <DisplayMany filteredCountries={filteredCountries} setFilter={setFilter}/>
+          {console.log('here babe')}
         </div>
       )
     }
@@ -46,12 +46,17 @@ const CountryList = ({countries, filter}) => {
   }
 }
 
-const DisplayMany = ({filteredCountries}) => {
-  return(
-    <ul>
-      {filteredCountries.map(country => <li key={country.name}>{country.name}</li> )}
-    </ul>
+const DisplayMany = ({filteredCountries, setFilter}) => {
 
+  return(
+    <div>
+    <ul>
+      {filteredCountries.map(country => 
+        <li key={country.name}>
+          {country.name} <button onClick={() => setFilter(country.name)}> show</button> </li> 
+        )}
+    </ul>
+    </div>
   )
 }
 
@@ -73,30 +78,53 @@ const DisplayOne = ({filteredCountries}) => {
 }
 
 const FilteringField = ({filter, setFilter}) => {
-
   const handleTypingFilter = (event) => {
-    console.log(event.target.value)
     setFilter(event.target.value)
-  }
-
+    }
   return (
-  <div>
-        Find countries   
-          <input
-            name="filter"
-            value={filter}
-            onChange={handleTypingFilter}
-          />
-  </div>
+    <div>
+      Find countries   
+        <input
+          name="filter"
+          value={filter}
+          onChange={handleTypingFilter}
+        />
+    </div>
   )
 }
 
 
 const App = () => {
   const [ filter, setFilter] = useState('')
-  const [ countries, setCountries ] = useState ( //incl. 12 hard-coded samples
-    [
-      {
+  const [ countries, setCountries ] = useState ([])
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('https://restcountries.eu/rest/v2/all')
+      .then(response => {
+        console.log('response.data', response.data)
+        setCountries(response.data)
+      })
+  }, [])
+
+  return (
+    <div>
+      <h3>Welcome</h3>
+      <FilteringField filter={filter} setFilter={(e) => setFilter(e)}/>
+      <h3>Matching</h3>
+      {console.log(filter)}
+      <CountryList countries={countries} filter={filter} setFilter={(e) => setFilter(e)}/>
+    </div>
+  )
+}
+
+export default App
+
+
+
+/**
+ *       {
         name: "Sweden",
         capital: "Stockholm",
         population: "8,7 million",
@@ -168,30 +196,4 @@ const App = () => {
         population: "50 million",
         languages: ['Persian']
       }
-    ]
-  )
-
-  useEffect(() => {
-    console.log('effect')
-    axios
-      .get('https://restcountries.eu/rest/v2/all')
-      .then(response => {
-        console.log('response.data', response.data)
-        setCountries(response.data)
-      })
-  }, [])
-  console.log('success here')
-
-  return (
-    <div>
-      <h3>Welcome</h3>
-      <FilteringField filter={filter} setFilter={(e) => setFilter(e)}/>
-      <br>
-      </br>
-      <h3>Matching</h3>
-      <CountryList countries={countries} filter={filter}/>
-    </div>
-  )
-}
-
-export default App
+ */
