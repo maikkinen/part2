@@ -43,7 +43,7 @@ const Filtering = ({filter, setFilter}) => {
   )
 }
 
-const PersonForm = ({newName, newNumber, handleTypingName, handleTypingNumber, handleAddPerson}) => {
+const PersonForm = ({newName, newNumber, handleTypingName, handleTypingNumber, handleAddPerson}) => { 
   return (
   <form style={{margin: 10}} onSubmit={handleAddPerson}>
       <div>
@@ -116,6 +116,13 @@ const App = () => {
     else {
       const personsUpd = persons.concat(newPerson)
       setPersons(personsUpd)
+
+      //send new contact to server
+      axios
+        .post('http://localhost:3001/persons', newPerson)
+        .then(response => {
+          console.log(response)
+        })
       setNewName('')
       setNewNumber('')
     }
