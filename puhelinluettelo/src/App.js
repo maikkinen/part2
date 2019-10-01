@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import axios from 'axios'
+import puhelinluetteloService from './services/puhelinluettelo'
 
 const PhonebookList = ({persons, filter}) => {
   const filteredNames = persons
@@ -17,7 +17,7 @@ const PhonebookList = ({persons, filter}) => {
   else { 
     return (
       <ul>
-        {filteredNames.map(person => <li key={person.name} >{person.name} {person.number}</li> )}
+        {filteredNames.map(person => <li key={person.id} >{person.name} {person.number}</li> )}
       </ul>
       )
   }
@@ -69,36 +69,17 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
   const [ filter, setFilter ] = useState('')
-  const [ persons, setPersons ] = useState(
-    [
-      { name: 'Arto Hellas',
-        number: '+358 60 546 2345'
-      },
-      { name: 'Liisa Lokki',
-        number: '+47 67 345 7654'
-      },
-      { name: 'Kaisa Kuoriainen',
-        number: '+358 12 101 0010'
-      },
-      { name: 'Kaj Frank',
-        number: '+45 45 5300 355'
-      },
-      { name: 'Päivi Päärynäjäätelö',
-        number: '+1 405 054 7722'
-      }
-    ]
-  ) 
+  const [ persons, setPersons ] = useState( [] ) 
 
   useEffect(() => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+    puhelinluetteloService
+      //.get('http://localhost:3001/persons')
+      .getAll()
       .then(response => {
-        console.log('response.data', response.data)
-        setPersons(response.data)
+        console.log(response)
+        setPersons(response)
       })
   }, [])
-  console.log('render', persons.length, 'persons')
 
   const handleAddPerson = (event) => { // handler
     event.preventDefault()
@@ -107,7 +88,14 @@ const App = () => {
       number: newNumber
     }
     
+    // tää tyyppi on jo olemassa for sure, eli nyt sit vaa päivitä nro
+    // if on olemassa update, else add
+
+
     if (persons.map(person => person.name).includes(newName)) {
+      //   ------>  EDIT NUMBER HERE
+        const personsUpd = persons.concat(newPerson)
+        setPersons(personsUpd)
       return (window.alert(`${newName} has been added already!`))
     }
     else if (newNumber.length <= 0) {
@@ -118,16 +106,25 @@ const App = () => {
       setPersons(personsUpd)
 
       //send new contact to server
-      axios
-        .post('http://localhost:3001/persons', newPerson)
-        .then(response => {
-          console.log(response)
+      //axios
+      //  .post('http://localhost:3001/persons', newPerson)
+      //  .then(response => {
+      /*    console.log(response)
         })
       setNewName('')
       setNewNumber('')
     }
+    */
+      puhelinluetteloService
+        .create(newPerson)
+        .then(response => {
+          setPersons(persons.concat(response))
+          setNewName('')
+          setNewNumber('')
+        })
     
   }
+}
 
   const handleTypingName = (event) => (setNewName(event.target.value))
   const handleTypingNumber = (event) => (setNewNumber(event.target.value))
@@ -144,6 +141,5 @@ const App = () => {
   )
 
 }
-
 
 export default App
