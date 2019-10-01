@@ -9,7 +9,7 @@ const PhonebookList = ({persons, filter}) => {
     const filteredNames = persons.filter(person => (person.name.includes(filt)))
     return (
       <ul>
-          {filteredNames.map(person => <li key={person.name} >{person.name} {person.number}</li> )}
+        {filteredNames.map(person => <li key={person.name} >{person.name} {person.number}</li> )}
       </ul>
     )
   }
@@ -17,10 +17,24 @@ const PhonebookList = ({persons, filter}) => {
   else { 
     return (
       <ul>
-        {filteredNames.map(person => <li key={person.id} >{person.name} {person.number}</li> )}
+        {filteredNames.map(person => <li key={person.id} >{person.name} {person.number} {console.log(person.id)} <button onClick={ () => handleDelete(person.id)}> delete </button> </li> )}
       </ul>
       )
   }
+}
+
+// tee uus handleDelete
+// src/servicesiin pitää tehdä http delete
+// syötä tää setti button onClickille 
+
+const handleDelete = (id, event) => {
+  console.log("hi")
+  /*event.preventDefault()
+  puhelinluetteloService
+  .deletePerson(id)
+  .then(response => 
+    console.log('farewell ', response ))
+    */
 }
 
 const Filtering = ({filter, setFilter}) => {
@@ -102,19 +116,6 @@ const App = () => {
       return (window.alert(`Please, give ${newName} an appropriate phone number!`))
     }
     else {
-      const personsUpd = persons.concat(newPerson)
-      setPersons(personsUpd)
-
-      //send new contact to server
-      //axios
-      //  .post('http://localhost:3001/persons', newPerson)
-      //  .then(response => {
-      /*    console.log(response)
-        })
-      setNewName('')
-      setNewNumber('')
-    }
-    */
       puhelinluetteloService
         .create(newPerson)
         .then(response => {

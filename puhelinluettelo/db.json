@@ -13,9 +13,9 @@
       "postId": 1
     }
   ],
-  "profile": [ 
+  "profile": [
     {
-    "name": "typicode"
+      "name": "typicode"
     }
   ],
   "notes": [
@@ -38,26 +38,31 @@
       "important": true
     }
   ],
-  "persons":[
-    { 
-      "name": "Arto Hellas", 
-      "number": "040-123456",
+  "persons": [
+    {
+      "name": "Maija",
+      "number": "+34 34 544 5533",
       "id": 1
     },
-    { 
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523",
+    {
+      "name": "Liisa",
+      "number": "+34 34 544 5555",
       "id": 2
     },
-    { 
-      "name": "Dan Abramov", 
-      "number": "12-43-234345",
+    {
+      "name": "Arto Hellas",
+      "number": "+47 3455 6767",
       "id": 3
     },
-    { 
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122",
+    {
+      "name": "Kaisa",
+      "number": "+4567896789",
       "id": 4
+    },
+    {
+      "name": "Miksu",
+      "number": "+276 789 9904",
+      "id": 5
     }
   ]
 }
