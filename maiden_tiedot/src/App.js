@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import axios from 'axios'
 
-const CountryList = ({countries, filter, setFilter}) => {
+const CountryList = ({countries, filter, setFilter, setCapital}) => {
   const filt = filter
 
   if (filter !== "") {
@@ -32,7 +32,7 @@ const CountryList = ({countries, filter, setFilter}) => {
     else {
       return (
         <div>
-        <DisplayOne filteredCountries={filteredCountries}/>
+        <DisplayOne filteredCountries={filteredCountries} setCapital={setCapital}/>
         {console.log('ready to call DisplayOne, honey, with', filteredCountries)}
         </div>
       )
@@ -60,9 +60,11 @@ const DisplayMany = ({filteredCountries, setFilter}) => {
   )
 }
 
-const DisplayOne = ({filteredCountries}) => {
+const DisplayOne = ({filteredCountries, setCapital}) => {
   const country = filteredCountries[0]
   const languages=country.languages
+  setCapital(country.capital)
+  console.log('dispone, capital is', country.capital)
   return(
     <div>
       <h4>{country.name}</h4>
@@ -73,6 +75,11 @@ const DisplayOne = ({filteredCountries}) => {
           {languages.map(lang => <li key={lang.name}>{lang.name}</li>)}
         </ul>
       <img src={country.flag} key={country.name} style={{width:110, height:75}}/>
+      {/* Rendering weather starts below. */}
+      <h4>Weather in {country.capital}</h4>
+      <p>temperature - - Celsius </p>
+      <img src={country.flag} key={country.capital} style={{width:25, height:12}}/>
+      <p>wind: - - kph, direction - - </p>
     </div>
   )
 }
@@ -97,6 +104,9 @@ const FilteringField = ({filter, setFilter}) => {
 const App = () => {
   const [ filter, setFilter] = useState('')
   const [ countries, setCountries ] = useState ([])
+  const [ capital, setCapital ] = useState ('')
+  const [ weather, setWeather ] = useState ({})
+  const access_key = '07bccd600e4eea18cde96a605d971f3d'
 
   useEffect(() => {
     console.log('effect')
@@ -108,13 +118,32 @@ const App = () => {
       })
   }, [])
 
+
+  const handleGetWeather = () => {
+    const params = {
+      access_key: '07bccd600e4eea18cde96a605d971f3d',
+      query: 'Stockholm'
+    }
+    
+    axios
+      .get('http://api.weatherstack.com/current', {params})
+      .then(response => {
+        const weather = response.data
+        console.log(weather)
+        //const apiResponse = response.data;
+      })
+  }
+
+
+
   return (
     <div>
       <h3>Welcome</h3>
       <FilteringField filter={filter} setFilter={(e) => setFilter(e)}/>
       <h3>Matching</h3>
       {console.log(filter)}
-      <CountryList countries={countries} filter={filter} setFilter={(e) => setFilter(e)}/>
+      {handleGetWeather()}
+      <CountryList countries={countries} filter={filter} setFilter={(e) => setFilter(e)} setCapital={(e) => setCapital(e)} />
     </div>
   )
 }

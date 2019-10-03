@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import puhelinluetteloService from './services/puhelinluettelo'
 
-const PhonebookList = ({persons, filter}) => {
+const PhonebookList = ({persons, filter, handleDelete}) => {
   const filteredNames = persons
   const filt = filter
 
@@ -9,7 +9,7 @@ const PhonebookList = ({persons, filter}) => {
     const filteredNames = persons.filter(person => (person.name.includes(filt)))
     return (
       <ul>
-        {filteredNames.map(person => <li key={person.name} >{person.name} {person.number}</li> )}
+        {filteredNames.map(person => <li key={person.id} >{person.name} {person.number} <button onClick={ (e) => handleDelete(person.id, e)}> delete </button> </li> )}
       </ul>
     )
   }
@@ -17,30 +17,15 @@ const PhonebookList = ({persons, filter}) => {
   else { 
     return (
       <ul>
-        {filteredNames.map(person => <li key={person.id} >{person.name} {person.number} {console.log(person.id)} <button onClick={ () => handleDelete(person.id)}> delete </button> </li> )}
+        {filteredNames.map(person => <li key={person.id} >{person.name} {person.number} <button onClick={ (e) => handleDelete(person.id, e)}> delete </button> </li> )}
       </ul>
       )
   }
 }
 
-// tee uus handleDelete
-// src/servicesiin pitää tehdä http delete
-// syötä tää setti button onClickille 
-
-const handleDelete = (id, event) => {
-  console.log("hi")
-  /*event.preventDefault()
-  puhelinluetteloService
-  .deletePerson(id)
-  .then(response => 
-    console.log('farewell ', response ))
-    */
-}
-
 const Filtering = ({filter, setFilter}) => {
 
   const handleTypingFilter = (event) => {
-    console.log(event.target.value)
     setFilter(event.target.value)
   }
 
@@ -95,6 +80,25 @@ const App = () => {
       })
   }, [])
 
+  // tee uus handleDelete
+  // src/servicesiin pitää tehdä http update
+  // syötä tää setti button onClickille 
+
+
+
+  const handleDelete = (id, event) => {
+    const answer = window.confirm("You sure u wanna do this?")
+    if (answer) {
+      console.log("farewell firewall honey", id)
+      event.preventDefault(event)
+      puhelinluetteloService
+      .deletePerson(id)
+      .then(response =>
+        setPersons(persons.filter(person => person.id !== id))
+    )
+    }
+  }
+
   const handleAddPerson = (event) => { // handler
     event.preventDefault()
     const newPerson = {
@@ -107,12 +111,26 @@ const App = () => {
 
 
     if (persons.map(person => person.name).includes(newName)) {
-      //   ------>  EDIT NUMBER HERE
-        const personsUpd = persons.concat(newPerson)
-        setPersons(personsUpd)
-      return (window.alert(`${newName} has been added already!`))
+      const updatedPerson = persons.find(x => x.name === newName)
+      console.log("here in if babe")
+      const answer = window.confirm(`${newName} exists already. Would you like to update the number?`)
+        if (answer) {
+          puhelinluetteloService
+            .update(updatedPerson.id, newPerson)
+            /*.then (response => 
+              setPersons(newPerson))
+              */
+            .then(response => {
+              setPersons(persons.update(newPerson))
+              setNewName('')
+              setNewNumber('')
+            })
+        }
+      return (
+        console.log("sup")
+        )
     }
-    else if (newNumber.length <= 0) {
+    else if (newNumber.length <= 1) {
       return (window.alert(`Please, give ${newName} an appropriate phone number!`))
     }
     else {
@@ -137,7 +155,7 @@ const App = () => {
       <h2>Add a New Contact</h2>
         <PersonForm newName={newName} newNumber={newNumber} handleTypingName={handleTypingName} handleTypingNumber={handleTypingNumber} handleAddPerson={handleAddPerson} />
       <h2>Numbers</h2>
-        <PhonebookList persons={persons} filter={filter} />
+        <PhonebookList persons={persons} filter={filter} handleDelete={handleDelete}/>
     </div>
   )
 
