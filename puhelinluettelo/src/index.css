@@ -1,0 +1,22 @@
+
+
+h2 {
+    color:green;
+    font: bold;
+    font-family: sans-serif;
+}
+
+.inputField {
+    color: red;
+    padding: 5px;
+    margin: 5px;
+    background-color: peachpuff;
+    border: none;
+}
+
+button {
+    color: palevioletred;
+    background-color: palegoldenrod;
+    border: none;
+    border-radius: 25%;
+}

@@ -17,7 +17,10 @@ const PhonebookList = ({persons, filter, handleDelete}) => {
   else { 
     return (
       <ul>
-        {filteredNames.map(person => <li key={person.id} >{person.name} {person.number} <button onClick={ (e) => handleDelete(person.id, e)}> delete </button> </li> )}
+        {filteredNames.map(person => 
+        <li key={person.id} >{person.name} {person.number} 
+          <button onClick={ (e) => handleDelete(person.id, e)}> delete </button> 
+        </li> )}
       </ul>
       )
   }
@@ -33,7 +36,7 @@ const Filtering = ({filter, setFilter}) => {
   <div>
 
         show contacts with:  
-          <input
+          <input className='inputField'
             name="filter"
             value={filter}
             onChange={handleTypingFilter}
@@ -46,13 +49,13 @@ const PersonForm = ({newName, newNumber, handleTypingName, handleTypingNumber, h
   return (
   <form style={{margin: 10}} onSubmit={handleAddPerson}>
       <div>
-        name: <input //input, ja sit sitä händläillään
+        name: <input className='inputField' //input, ja sit sitä händläillään
           name="name"
           value={newName}
           onChange={handleTypingName}/>
       </div>
       <div>
-        number: <input
+        number: <input className='inputField'
           name="number" 
           value={newNumber}
           onChange={handleTypingNumber}/>
