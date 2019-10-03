@@ -109,22 +109,21 @@ const App = () => {
     // tää tyyppi on jo olemassa for sure, eli nyt sit vaa päivitä nro
     // if on olemassa update, else add
 
-
     if (persons.map(person => person.name).includes(newName)) {
-      const updatedPerson = persons.find(x => x.name === newName)
-      console.log("here in if babe")
+      const updateThisPerson = persons.find(x => x.name === newName)
+      console.log("updated Person", newPerson)
       const answer = window.confirm(`${newName} exists already. Would you like to update the number?`)
         if (answer) {
           puhelinluetteloService
-            .update(updatedPerson.id, newPerson)
-            /*.then (response => 
-              setPersons(newPerson))
-              */
-            .then(response => {
-              setPersons(persons.update(newPerson))
+            .update(updateThisPerson.id, newPerson)
+            .then( updatedPerson => {
+              setPersons(persons.map(person => person.name !== newName ? person : updatedPerson))
               setNewName('')
               setNewNumber('')
             })
+            .catch(
+              console.log("sos")
+            )
         }
       return (
         console.log("sup")

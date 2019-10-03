@@ -45,11 +45,6 @@
       "id": 1
     },
     {
-      "name": "Liina",
-      "number": "+89 678 4567",
-      "id": 3
-    },
-    {
       "name": "Sinfidr",
       "number": "+00 100 1000",
       "id": 5
@@ -58,11 +53,6 @@
       "name": "Pulla",
       "number": "+56 6789 678",
       "id": 10
-    },
-    {
-      "name": "Sukka",
-      "number": "+4567896789",
-      "id": 11
     },
     {
       "name": "Suklaa",
@@ -76,13 +66,18 @@
     },
     {
       "name": "Anni",
-      "number": "+11 111 123",
+      "number": "+358 566 3333",
       "id": 16
     },
     {
       "name": "Lilli",
       "number": "+78 789 7890",
       "id": 17
+    },
+    {
+      "name": "Kaapo",
+      "number": "+23 7875 83222",
+      "id": 18
     }
   ]
 }
