@@ -67,11 +67,23 @@ const PersonForm = ({newName, newNumber, handleTypingName, handleTypingNumber, h
   )
 } 
 
+const Notification = ({ message }) => {
+  if (message == null) {
+    return null
+  }
+  return (
+    <div className="error">
+      {message}
+    </div>
+  )
+}
+
 const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber] = useState('')
   const [ filter, setFilter ] = useState('')
-  const [ persons, setPersons ] = useState( [] ) 
+  const [ persons, setPersons ] = useState( [] )
+  const [ errorMessage, setErrorMessage] = useState('')
 
   useEffect(() => {
     puhelinluetteloService
@@ -96,9 +108,27 @@ const App = () => {
       event.preventDefault(event)
       puhelinluetteloService
       .deletePerson(id)
-      .then(response =>
+      .then(response => {
+        setErrorMessage(
+          `That dude was deleted.`
+        )
+        console.log("reesponse", response)
+        console.log("errorMessage", errorMessage)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 3000)
+        
         setPersons(persons.filter(person => person.id !== id))
-    )
+      
+      })
+      .catch(error => {
+        setErrorMessage(
+         `(S)he was already removed from the server`  //'${response.name}'
+        )
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 3000)
+      })
     }
   }
 
@@ -120,13 +150,22 @@ const App = () => {
           puhelinluetteloService
             .update(updateThisPerson.id, newPerson)
             .then( updatedPerson => {
+              setErrorMessage(
+                `Contact details of '${newName}' have been updated.` //'${response.name}'
+              )
+              console.log("hey")
+              setTimeout(() => {
+                setErrorMessage(null)
+              }, 3000)
               setPersons(persons.map(person => person.name !== newName ? person : updatedPerson))
               setNewName('')
               setNewNumber('')
             })
-            .catch(
-              console.log("sos")
-            )
+            .catch(error => {
+              setErrorMessage(
+                `Failed to update contact details.`
+              )
+            })
         }
       return (
         console.log("sup")
@@ -142,6 +181,14 @@ const App = () => {
           setPersons(persons.concat(response))
           setNewName('')
           setNewNumber('')
+          setErrorMessage(
+            `'${response.name}' has been added.`
+          )
+          console.log("response", response)
+          console.log("errorMessage", errorMessage)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 3000)
         })
     
   }
@@ -153,6 +200,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+        <Notification message={errorMessage} />
         <Filtering filter={filter} setFilter={(e) => setFilter(e)}/>
       <h2>Add a New Contact</h2>
         <PersonForm newName={newName} newNumber={newNumber} handleTypingName={handleTypingName} handleTypingNumber={handleTypingNumber} handleAddPerson={handleAddPerson} />

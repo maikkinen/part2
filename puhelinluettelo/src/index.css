@@ -1,4 +1,6 @@
-
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
 
 h2 {
     color:green;
@@ -7,7 +9,7 @@ h2 {
 }
 
 .inputField {
-    color: red;
+    color: purple;
     padding: 5px;
     margin: 5px;
     background-color: peachpuff;
@@ -20,3 +22,25 @@ button {
     border: none;
     border-radius: 25%;
 }
+
+.error {
+    color: red;
+    background: aliceblue;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
+
+  .success {
+    color: rgb(58, 78, 19);
+    background: yellowgreen;
+    font-size: 20px;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom: 5px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+  }
