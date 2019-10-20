@@ -7,20 +7,26 @@ const PhonebookList = ({persons, filter, handleDelete}) => {
 
   if (filter !== "") { //filteriin taitaa mennä jtn ennen kuin kaatuu, koska pääsee 7:aan
     const filteredNames = persons.filter(person => (person.name.includes(filt)))
-    return (
-      <ul>
-        {filteredNames.map(person => <li key={person.id} >{person.name} {person.number} <button onClick={ (e) => handleDelete(person.id, e)}> delete </button> </li> )}
-      </ul>
-    )
-  }
-  //Jos ei haluta filtteröidä = näytä kaikki.
-  else { 
+    console.log(filteredNames)
     return (
       <ul>
         {filteredNames.map(person => 
         <li key={person.id} >{person.name} {person.number} 
           <button onClick={ (e) => handleDelete(person.id, e)}> delete </button> 
         </li> )}
+      </ul>
+    )
+  }
+  //Jos ei haluta filtteröidä = näytä kaikki.
+  else { 
+    console.log(filteredNames)
+    return (
+      <ul> 
+        { filteredNames.map(person => 
+            <li key={person.id} >{person.name} {person.number} 
+              <button onClick={ (e) => handleDelete(person.id, e)}> delete </button>
+            </li> 
+        )}
       </ul>
       )
   }
@@ -77,6 +83,13 @@ const Notification = ({ message }) => {
     </div>
   )
 }
+
+
+
+
+
+
+
 
 const App = () => {
   const [ newName, setNewName ] = useState('')
