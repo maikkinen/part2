@@ -203,6 +203,15 @@ const App = () => {
             setErrorMessage(null)
           }, 3000)
         })
+        .catch(error => {
+          console.log("ouch honey, u missed sth now")
+          setErrorMessage(
+            `'${error.response.data.error}'`
+          )
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 3000)
+        })
     
   }
 }
